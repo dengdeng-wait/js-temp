@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="dist/css/common.css">
+  <title>slide</title>
+</head>
+<body>
+  <article class="modal">
+  </article>
+
+
+<script src="js/common.js" defer></script>
+<script>
+  function makeCounter(predicate) {
+    let num = 0;
+    return function() {
+      num = predicate(num);
+      return num;
+    }
+  }
+
+  function increase(n) {
+    return ++n;
+  }
+
+  function decrease(n) {
+    return --n;
+  }
+
+  const increaser = makeCounter(increase);
+  console.log(increaser());
+  console.log(increaser());
+</script>
+</body>
+</html>

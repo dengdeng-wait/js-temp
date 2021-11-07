@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="dist/css/common.css">
+  <title>scroll</title>
+</head>
+<body>
+  <section class="sc_focus">
+    <ul>
+      <li><a href="#" data-id="0" style="display: block;height: 100px; border: 1px solid #f20000;">focus1</a></li>
+      <li><a href="#" data-id="1" style="display: block; height: 100px;border: 1px solid #f20000;">focus2</a></li>
+      <li><a href="#" data-id="2" style="display: block; height: 100px; border: 1px solid #f20000;">focus3</a></li>
+    </ul>
+    <div class="fbox" id="" style="height: 500px;border: 1px solid #000;">cont1</div>
+    <div class="fbox" id="" style="height: 500px;border: 1px solid #000;">cont2</div>
+    <div class="fbox" id="" style="height: 500px;border: 1px solid #000;">cont3</div>
+  </section>
+  <script src="js/jquery-3.6.0.min.js" defer></script>
+  <script src="js/common.js" defer></script>
+  <script>
+    (function(){
+      const abtn = document.querySelectorAll('.sc_focus ul li');
+      const targetSection = document.querySelectorAll('.fbox');
+      // const header = document.querySelector('#header');
+      // const headerH = header.clientHeight;
+      let sectionHeightArr = [];
+
+      for(let i = 0; i < abtn.length; i++) {
+        let h = Math.ceil(targetSection[i].offsetTop);
+        console.log(h);
+        sectionHeightArr.push(h);
+
+        abtn[i].addEventListener('click', function(e) {
+          console.log(`${sectionHeightArr}`);
+          e.preventDefault;
+          let dataId = abtn[i].querySelector('a').getAttribute('data-id');
+          scrollAction(dataId);
+        });
+
+        function scrollAction(dataId) {
+          let calcScroll = sectionHeightArr[dataId];
+
+          $('html, body').animate({scrollTop : calcScroll});
+        }
+      };
+
+    })();
+//이하 연습
+    function Person(name) {
+      this.name = name;
+    }
+
+    Person.prototype.getName = function() {
+      return this.name;
+    }
+
+    var me = new Person('kim');
+    console.log(me.getName());
+
+    Person.prototype.name = 'lee';
+    console.log(Person.prototype.getName());
+
+    var foo = {
+      name: 'foo',
+      gender: 'male'
+    }
+
+console.dir(foo.prototype == Object.prototypes);
+
+function Person1(name) {
+  this.name = name;
+}
+
+Person1.prototype.doSomething = function (callback) {
+  console.log(typeof callback);
+  if (typeof callback == 'function') {
+    // callback.call(this);
+    // this가 바인딩된 새로운 함수를 호출
+    callback.bind(this)();
+  }
+};
+
+function foo1() {
+  console.log('#', this.name);
+}
+
+var p = new Person1('Lee');
+p.doSomething(foo1);  // 'Lee'
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="dist/css/common.css">
+  <title>bundle</title>
+</head>
+<body>
+  <!-- accordion -->
+  <div class="accordion-play">
+    <button class="accordion-btn"><span class="toggle-ico"></span></button>
+    <div class="accordion-content"></div>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script>
+    //accordion instance
+    const acc1 = new Accordion('.accordion-play', {
+    childBtn: '.accordion-btn',
+    ico: '.toggle-ico',
+    viewCont: '.accordion-content'
+    });
+    console.log(acc1);
+  </script>
+</body>
+</html>
