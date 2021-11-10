@@ -74,7 +74,7 @@ const scrollWheel = () => {
   }
 }
 
-//scroll btn mov
+//scroll btn mov - ver1
 const scorllTagetMv = () => {
   const header = document.querySelector('#header');
   const headerH = header.clientHeight;
@@ -104,6 +104,17 @@ const scorllTagetMv = () => {
     $('html, body').animate({scrollTop : calcScroll});
   }
 }
+
+//scroll btn mov - ver2(jquery)
+// const scrollIdTargetMv = () => {
+//   $(window).on('click', '.menu .btn', (ev) => {
+//     let header = $('header').outerHeight();
+//     ev.preventDefault;
+//     $('html, body').animate({
+//       scrollTop: $(this.hash).offset().top - header
+//     },300);
+//   });
+// }
 
 //accordion
 function Accordion(getEle, value) {
@@ -231,6 +242,49 @@ openPop.init({
   closeBtnDim: '.dim'
 });
 
+//dropdown
+function Dropdown() {
+  this.dropdown = null;
+  this.btn = null;
+  this.content = null;
+  this.backBtn = null;
+}
+
+Dropdown.prototype.init = function({dropdownSec: secEle}) {
+  this.dropdown = document.querySelectorAll(secEle);
+  this.onClick();
+}
+Dropdown.prototype.onClick = function() {
+  for (let i = 0; i < this.dropdown.length; i++) {
+    this.btn = this.dropdown[i].querySelector('.dropdown-name');
+    this.content = this.dropdown[i].querySelector('.dropdown-content');
+    this.content.style.display = 'none';
+    this.backBtn = this.dropdown[i].querySelector('.back-btn');
+    this.backBtn.style.display = 'none';
+    this.btn.addEventListener('click', this.contView);
+    this.backBtn.addEventListener('click', this.backHandler);
+  }
+}
+Dropdown.prototype.contView = function(e) {
+  const targetCont = e.currentTarget.nextElementSibling,
+        targetBackBtn = e.currentTarget.closest('.dropdown').querySelector('.dropdown-content');
+
+  targetCont.style.display = 'block';
+  targetBackBtn.style.display = 'block';
+}
+Dropdown.prototype.backHandler = function(e) {
+  const target = e.currentTarget,
+        targetCont = e.currentTarget.previousElementSibling.querySelector('.dropdown-content');
+
+  target.style.display = 'none';
+  targetCont.style.display = 'none';
+} 
+
+//instance
+const dropdownPlay = new Dropdown();
+dropdownPlay.init({
+  dropdownSec: '.dropdown'
+});
 
 //tab
 function Tab() {
