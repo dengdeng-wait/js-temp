@@ -1,5 +1,6 @@
 window.onload = () => {
   init();
+  console.dir([]);
 }
 
 const init = () => {
@@ -153,6 +154,13 @@ Accordion.prototype.toggleAction = function(el) {
   }
 }
 
+//instance
+new acc = new Accordion('.acc-wrap', {
+  childBtn: '.button',
+  ico: 'btn-arrow',
+  viewCont: 'content'
+});
+
 //pop
 function ModalPop() {
   this.openBtn = null;
@@ -214,10 +222,51 @@ ModalPop.prototype.close = function(e) {
   })
 }
 
+//instance
 const openPop = new ModalPop();
 openPop.init({
   openBtn: 'btn-open-pop',
   openPop: 'pop-cont-area',
   closeBtn: '.btn-close',
   closeBtnDim: '.dim'
+});
+
+
+//tab
+function Tab() {
+  this.tab = null,
+  this.menu = null,
+  this.contents = null
+}
+
+Tab.prototype.init = function({tabSec: tabEle}) {
+  this.tab = document.querySelector(tabEle);
+  this.menu = this.tab.querySelectorAll('.tab-menu li');
+  this.contents = this.tab.querySelectorAll('.tab-cont li');
+  this.menu();
+}
+
+Tab.prototype.menu = function() {
+  [...this.menu].map((item, i) => {
+    item.querySelector('.btn').addEventListener('click', function(e) {
+      this.menu.forEach(el => {
+        el.classList.remove('active');
+      });
+      e.target.parentElement.classList.add('active');
+      this.contents(i);
+    }.bind(this));
+  });
+}
+
+Tab.prototype.contents = function(index) {
+  this.contents.forEach(el => {
+    el.classList.remove('active');
+  });
+  this.contents[index].classList.add('active');
+}
+
+//instance
+const tabMenu = new Tab();
+tabMenu.init({
+  tabSec: '.tabs'
 });
