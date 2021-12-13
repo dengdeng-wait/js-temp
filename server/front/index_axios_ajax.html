@@ -32,7 +32,7 @@
         if (contentType?.includes('application/json')) {
           root.innerHTML = `<h1>${res.data.title}</h1><p>${res.data.content}</p>`;
         } else {
-          root.innerHTML = await res.text();
+          root.innerHTML = await res.data;
         }
       } catch (err) {
         console.error(err);
