@@ -9,7 +9,7 @@
 </head>
 <body>
   <script>
-    async function getTest() {
+    async function getTest() { // backend와 통신
       try {
         const response = await axios.get('http://localhost:8080/pet')
         console.log(response)
