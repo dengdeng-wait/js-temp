@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>scroll wheel motion</title>
+  <style>
+    div{width: 200px; height: 200px;}
+  </style>
+</head>
+<body>
+  <div class="bb"></div>
+  <div class="aa"></div>
+  <div class="cc"></div>
+  <div class="ee"></div>
+  <div class="dd">
+    <div class="y"></div>
+  </div>
+
+  <script>
+    let body = document.querySelector('body');
+    let totalHeight = 0;
+    let yOffset = 0;
+    let totalWidth = 0;
+    let cc = 0;
+
+    function init() {
+      cc = document.querySelector('.cc').clientWidth;
+      totalHeight = Number(window.getComputedStyle(body).height.replace('px', '')) - window.innerHeight;
+      totalWidth = window.innerWidth;
+      console.log(cc);
+    }
+
+    function scrollAction() {
+      yOffset = window.pageYOffset; //오래된 브라우저 지원 pageYOffset , 신브라우저는 scrollY
+      console.log(yOffset);
+      let ratio = yOffset / totalHeight;
+      let move = radio * 200;
+      let move3 = radio * 400;
+      let move2 = ratio * (totalWidth - cc - 18);
+
+      document.querySelector('.aa').style.transform = `translateX(${move}px)`;
+      document.querySelector('.cc').style.transform = `translateX(${move2}px)`;
+      document.querySelector('.ee').style.transform = `translateX(${move3}px)`;
+    }
+
+    window.addEventListener('scroll', scrollAction);
+    window.addEventListener('resize', function() {
+      init();
+      scrollAction();
+    });
+    window.addEventListener('load', init);
+  </script>
+</body>
+</html>
