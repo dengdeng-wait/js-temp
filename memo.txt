@@ -1,0 +1,7 @@
+npm 서버 실행 소스 부분 package.json
+ "scripts": {
+    "dev": "nodemon --exec npm run restart",
+    "restart": "rimraf dist && npm run build && npm run start",
+    "build": "babel src --out-dir dist --source-maps inline --copy-files",
+    "start": "node dist/app.js"
+  },
