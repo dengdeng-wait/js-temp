@@ -5,3 +5,19 @@ npm 서버 실행 소스 부분 package.json
     "build": "babel src --out-dir dist --source-maps inline --copy-files",
     "start": "node dist/app.js"
   },
+  
+  eslint 의 prettier 설정 settings.json (settings.json 파일 열기
+f1 -> settings 입력 -> Preferences: Open Settings (JSON) 클릭)
+  {}안에 추가
+  "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "eslint.alwaysShowStatus": true,
+    "eslint.workingDirectories": [
+        {"mode": "auto"}
+    ],
+    "eslint.validate": [
+        "javascript",
+        "typescript"
+    ]
