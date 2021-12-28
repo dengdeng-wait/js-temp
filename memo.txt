@@ -24,3 +24,37 @@ f1 -> settings 입력 -> Preferences: Open Settings (JSON) 클릭)
     
     npm설치시 package.json의 devDependencies에만 설치명령어
     npm i -D 라이브러리명(ex. dotenv)
+
+eslint 관련 vscode 설정 수정
+command + , -> eslint -> validate - settings.json 
+하단 추가
+{
+  // ESLint
+  "eslint.validate": [
+    {
+      "language": "vue",
+      "autoFix": true
+    },
+    {
+      "language": "javascript",
+      "autoFix": true
+    },
+    {
+      "language": "javascriptreact",
+      "autoFix": true
+    },
+    {
+      "language": "typescript",
+      "autoFix": true
+    },
+    {
+      "language": "typescriptreact",
+      "autoFix": true
+    }
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  // don't format on save
+  "editor.formatOnSave": false
+}
