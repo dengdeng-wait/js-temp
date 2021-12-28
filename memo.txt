@@ -58,3 +58,6 @@ command + , -> eslint -> validate - settings.json
   // don't format on save
   "editor.formatOnSave": false
 }
+///
+vscode 설정
+formate on save 검색 - 체크해제되어 있어야함(프리티어와 eslint충돌방지)
