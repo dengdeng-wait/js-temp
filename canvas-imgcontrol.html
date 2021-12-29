@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas</title>
+</head>
+<body>
+  <style>
+    *{margin: 0; padding: 0;}
+    html, body{width: 100%; height: 100%;}
+    img{width: 100%; position: fixed;}
+    video{position: fixed; top: 0; width: 100%;}
+    canvas{width: 100%; height: 100%;}
+    .wrap{height: 13000px;}
+  </style>
+  <script>
+    class imageAction{
+      constructor() {
+        this.init();
+      }
+
+      init() {
+        this.imageArr = [];
+        this.fileNum = 54;
+        this.canvas = document.createElement('canvas');
+        this.image = new Image();
+        this.ctx = this.canvas.getContext('2d');
+
+        this.progress = 0;
+        this.ani = 0;
+
+        //body setting
+        document.body.style.height = 3000 + 'px';
+        document.body.appendChild(this.image);
+
+        this.setImgase();
+        this.draw();
+
+        window.addEventListener('load', this.init.bind(this));
+        window.addEventListener('scroll', this.scrollAction.bind(this));
+      }
+
+      setImgase() {
+        for (let i = 0; i < this.fileNum; i++) {
+          let aa = this.image.src = `./images/ani${i}.png`;
+          this.imageArr.push(aa);
+        }
+        console.log(this.imageArr);
+      }
+
+      draw() {
+        this.ani = this.progress * this.fileNum;
+        this.image.src = this.imageArr[Math.round(this.ani)];
+
+        console.log(this.imageArr[Math.round(this.ani)]);
+        if(this.ani < 0) this.ani = 0;
+        if(this.ani > this.fileNum - 1) this.ani = this.fileNum - 1;
+      }
+
+      scrollAction() {
+        this.progress = window.pageYOffset / (document.body.clientHeight - window.innerHeight);
+        this.draw();
+      }
+    }
+
+    window.addEventListener('load', e => {
+      new imageAction();
+    });
+  </script>
+</body>
+</html>
