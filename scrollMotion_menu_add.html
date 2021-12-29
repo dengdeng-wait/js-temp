@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>scroll menu section</title>
+</head>
+<body>
+  <style>
+    body, html{height: 100%; box-sizing: border-box;}
+    .container #sec-1, .container #sec-2, .container #sec-3, .container #sec-4{border: 1px solid red; position: relative; text-align: center; padding: 170px 50px;}
+    .container #sec-1 > div.sticky, .container #sec-2 > div.sticky, .container #sec-3 > div.sticky, .container #sec-4 > div.sticky{position: fixed; top: 35vh; left: 0; right: 0; margin: auto; display: none; opacity: 0;}
+    body#show-scene-0 #sec-1 > div.sticky, body#show-scene-1 #sec-2 > div.sticky, body#show-scene-2 #sec-3 > div.sticky, body#show-scene-3 #sec-4 > div.sticky{display: block;}
+
+    .wrap{position: relative;}
+    .btn{position: fixed; top: 50%; right: 20px; transform: translateY(-50%); z-index: 100;}
+    .btn > li{width: 5px; height: 20px; border: 1px solid #ddd; margin-top: 10px; border-radius: 10px; transition: all .3s; cursor: pointer;}
+    .btn > li.on {height: 40px; background: rgba(150, 165, 177, 1);}
+  </style>
+
+  <div class="wrap">
+    <ul class="btn">
+      <li class="on"><a href="#sec-1"></a></li>
+      <li><a href="#sec-2"></a></li>
+      <li><a href="#sec-3"></a></li>
+      <li><a href="#sec-4"></a></li>
+    </ul>
+
+    <div class="container">
+      <section id="sec-1">
+        <h1>section1</h1>
+        <div class="point1">point1</div>
+        <div class="sticky msgA" style="opacity: 1;">sticky1</div>
+      </section>
+      <section id="sec-1">
+        <h1>section2</h1>
+        <div class="point1">point1</div>
+        <div class="sticky">sticky2</div>
+      </section>
+      <section id="sec-1">
+        <h1>section3</h1>
+        <div class="point1">point1</div>
+        <div class="sticky">sticky3</div>
+      </section>
+      <section id="sec-1">
+        <h1>section4</h1>
+        <div class="point1">point1</div>
+        <div class="sticky">sticky4</div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      let current = 0;
+      let pageYOffset = 0;
+      let prevHeight = 0;
+
+      const info = [
+        {
+          type: 'sticky',
+          deviceHeight: 0,
+          pageNum: 1,
+          ele: {
+            section: document.querySelector('#sec-1'),
+            msgA: document.querySelector('.sticky.msgA'),
+            msgB: document.querySelector('.sticky.msgB')
+          },
+          value: {
+            msgA_opacity_in: [0, 1, {start: 0.2, end: 0.4}],
+            msgA_opacity_out: [1, 0, {start: 0.45, end: 0.6}],
+            msgA_left_in: [200, 1000, {start: 0.2, end: 0.4}],
+            msgA_left_out: [1000, 20, {start: 0.45, end: 0.6}],
+            msgA_trans_in: [100, 0, {start: 0.2, end: 0.4}],
+            msgA_trans_out: [0, -100, {start: 0.45, end: 0.6}],
+          }
+        },
+        {
+          type: 'normal',
+          deviceHeight: 0,
+          pageNum: 2,
+          ele: {
+            section: document.querySelector('#sec-2')
+          }
+        },
+        {
+          type: 'sticky',
+          deviceHeight: 0,
+          pageNum: 3,
+          ele: {
+            section: document.querySelector('#sec-3')
+          }
+        },
+        {
+          type: 'sticky',
+          deviceHeight: 0,
+          pageNum: 4,
+          ele: {
+            section: document.querySelector('#sec-4')
+          }
+        }
+      ];
+
+      //load setting
+      function setter() {
+        for(let i = 0; i < info.length; i++) {
+          let height = info[i].deviceHeight = window.innerHeight * info[i].pageNum;
+          info[i].ele.section.style.height = height + 'px'
+        }
+
+        let totalScroll = 0;
+        pageYOffset = window.pageYOffset;
+        for(let i = 0; i < info.length; i++) {
+          totalScroll += info[i].deviceHeight;
+
+          if(pageYOffset < totalScroll) {
+            current = i;
+            break;
+          }
+        }
+
+        document.querySelector('body').setAttribute('id', 'show-scene-' + current);
+      }
+
+      //scroll event
+      function scrollLoop() {
+        pageYOffset = window.pageYOffset;
+        prevHeight = 0;
+        for (let i = 0; i < current; i++) {
+          prevHeight += info[i].deviceHeight;
+        }
+
+        if(pageYOffset > prevHeight + info[current].deviceHeight) {
+          current++;
+          document.querySelector('body').setAttribute('id', 'show-scene-' + current);
+        }
+
+        if(pageYOffset < prevHeight) {
+          current--;
+          document.querySelector('body').setAttribute('id', 'show-scene-' + current);
+        }
+        ani();
+      }
+
+      //scroll 시 애니
+      function ani() {
+        let value = info[current].value;
+        let currentHeight = pageYOffset - prevHeight;
+        let ratio = currentHeight / info[current].deviceHeight;
+        pageYOffset = window.pageYOffset;
+
+        switch(current) {
+          case 0 :
+            if(ratio <= 0.43) {
+              info[current].ele.msgA.style.opacity = calcValue(value.msgA_opacity_in, currentHeight);
+              info[current].ele.msgA.style.transform = `translateY(${calcValue(value.msgA_trans_in, currentHeight)} px)`;
+            } else {
+              info[current].ele.msgA.style.opacity = calcValue(value.msgA_opacity_out, currentHeight);
+              info[current].ele.msgA.style.transform = `translateY(${calcValue(value.msgA_trans_out, currentHeight)} px)`;
+            }
+            break;
+          
+          case 1 :
+            break;
+
+          case 2 :
+            break;
+
+          case 3:
+            break;
+        }
+      }
+
+      //대입해줄 값
+      function calcValue(value, currentHeight) {
+        pageYOffset = window.pageYOffset;
+        let result = null;
+        let partStart = value[2].start * info[current.deviceHeight] //px값
+        let partEnd = value[2].end * info[current.deviceHeight] //px값
+        let partHeight = partEnd - partStart //px값
+        let ratio = currentHeight / info[current].deviceHeight //전체높이에 지금위치 백분율값
+
+        if(value[2].start) {
+          if(pageYOffset >= partStart && pageYOffset <= partEnd) {
+            result = (currentHeight - partStart) / partHeight * (value[1] - value[0]) + value[0]
+          } else if(pageYOffset <= partStart) {
+            result = value[0];
+          } else if(pageYOffset >= pageEnd) {
+            result = value[1];
+          }
+        } else {
+          result = ratio * (value[1] - value[0]) + value[0];
+        }
+
+        return result;
+      }
+
+      //click
+      const btn = document.querySelector('.btn li');
+      for (let i = 0; i < btn.length; i++) {
+        (function(idx) {
+          btn[idx].addEventListener('click', function() {
+            toggleClass(idx, btn);
+
+            let ele = info[idx].ele.section.offsetTop;
+            window.scrollTo({top: ele, behavior: 'smooth'});
+          });
+        })(i);
+      }
+
+      function toggleClass(idx, eles) {
+        for (let i = 0; i < eles.length; i++) {
+          eles[i].className = '';
+        }
+        eles[idx].classList.add('on');
+      }
+
+      window.addEventListener('load', setter);
+      window.addEventListener('resize', setter);
+      window.addEventListener('scroll', function() {
+        scrollLoop();
+      });
+    })();
+  </script>
+</body>
+</html>
