@@ -52,11 +52,11 @@
 
       draw() {
         this.ani = this.progress * this.fileNum;
-        this.image.src = this.imageArr[Math.round(this.ani)];
-
         console.log(this.imageArr[Math.round(this.ani)]);
+         
         if(this.ani < 0) this.ani = 0;
         if(this.ani > this.fileNum - 1) this.ani = this.fileNum - 1;
+        this.image.src = this.imageArr[Math.round(this.ani)];
       }
 
       scrollAction() {
