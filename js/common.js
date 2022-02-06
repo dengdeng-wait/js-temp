@@ -116,211 +116,211 @@ const scorllTagetMv = () => {
 //   });
 // }
 
-//accordion
-function Accordion(getEle, value) {
-  this.ele = document.querySelector(getEle);
-  this.value = {
-    childBtn: this.ele.querySelectorAll(value.childBtn),
-    ico: this.ele.querySelectorAll(value.ico),
-    viewCont: this.ele.querySelectorAll(value.viewCont)
+class Accordion {
+  constructor(getEle, value) {
+    this.ele = document.querySelector(getEle);
+    this.value = {
+      childBtn: this.ele.querySelectorAll(value.childBtn),
+      ico: this.ele.querySelectorAll(value.ico),
+      viewCont: this.ele.querySelectorAll(value.viewCont)
+    }
+    this.init();
   }
-  this.init();
-}
-
-Accordion.prototype.init = function () {
-  this.onClick();
-}
-
-Accordion.prototype.onClick = function() {
-  const accBtn = this.value.childBtn;
-
-  accBtn.forEach(el => {
-    el.addEventListener('click', this.toggleAction.bind(this));
-  });
-}
-
-Accordion.prototype.toggleAction = function(el) {
-  const target = el.currentTarget;
-  const targetView = target.parentElement.nextElementSibling.classList;
-  const targetIcon = target.children[1];
-
-  const accIcon = this.value.ico,
-        accView = this.value.viewCont;
-
-  if(targetView.contains('active')){
-    targetView.remove('active');
-    targetIcon.classList.remove('ani');
+  init() {
+    this.onClick();
   }
-  else {
-    accIcon.forEach(el => {
-      el.classList.remove('ani');
-    });
-
-    accView.forEach(el => {
-      el.classList.remove('active');
-    });
-
-    targetView.add('active');
-    targetIcon.classList.add('ani');
+  onClick() {
+    const accBtn = this.value.childBtn;
+    accBtn.forEach(el => {
+      el.addEventListener('click', this.toggleAction.bind(this));
+    })
   }
-}
+  toggleAction(el) {
+    const target = el.currentTarget;
+    const targetView = target.nextElementSibling.classList;
+    const targetIcon = target.children[1];
+    console.log(target);
 
-//instance
-new acc = new Accordion('.acc-wrap', {
-  childBtn: '.button',
-  ico: 'btn-arrow',
-  viewCont: 'content'
-});
-
-//pop
-function ModalPop() {
-  this.openBtn = null;
-  this.contents = null;
-  this.closeBtn = null;
-  this.closeBtnDim = null;
-}
-
-ModalPop.prototype.init = function({openBtn: openBtn, openPop: contents, closeBtn: closeBtn, closeBtnDim: closeBtnDim}) {
-  this.openBtn = document.querySelectorAll(openBtn);
-  this.openBtn.forEach(el => {
-    el.addEventListener('click', this.open.bind(this));
-  });
-  this.contents = document.querySelectorAll(contents);
-  this.closeBtn = document.querySelectorAll(closeBtn);
-  this.closeBtn.forEach(el => {
-    el.addEventListener('click', this.close.bind(this));
-  });
-  this.closeBtnDim = document.querySelectorAll(closeBtnDim);
-  this.closeBtnDim.forEach(el => {
-    el.addEventListener('click', this.close.bind(this));
-  });
-}
-
-ModalPop.prototype.open = function(el) {
-  document.body.classList.add('pop-open');
-  const target = el.currentTarget.getAttrbute('data-modal-type');
-  const contTarget = document.querySelector(`[data-modal-pop=${target}]`)
-  const contEle = contTarget.querySelector('.modal');
-  const dim = contTarget.querySelector('.dim');
-
-  contTarget.style.display = 'block';
-  dim.style.display = 'block';
-  setTimeout(() => {
-    contEle.classList.add('active');    
-  }, 100);
-}
-
-ModalPop.prototype.close = function(e) {
-  if(e.currentTarget.className == 'dim') {
-    e.currentTarget.previousElementSibling.classList.remove('active');
-    e.currentTarget.style.display = 'none';
-  }
-  else {
-    e.currentTarget.closest('modal').classList.remove('active');
-  }
-  this.contents.forEach(el => {
-    const attrEl = el.getAttrbute('data-modal-pop');
-    if(attrEl = 'alert') { //alert use
-      document.body.classList.remove('pop-open');
-      el.style.display = 'none';
+    const accIcon = this.value.ico,
+    accView = this.value.viewCont;
+    
+    if (targetView.contains('active')) {
+      targetView.remove('active');
+      targetIcon.classList.remove('ani');
     }
     else {
-      setTimeout(() => {
-        el.style.display = 'none';
-        document.body.classList.remove('pop-open');
-      }, 200);
-    }
-  })
-}
-
-//instance
-const openPop = new ModalPop();
-openPop.init({
-  openBtn: 'btn-open-pop',
-  openPop: 'pop-cont-area',
-  closeBtn: '.btn-close',
-  closeBtnDim: '.dim'
-});
-
-//dropdown
-function Dropdown() {
-  this.dropdown = null;
-  this.btn = null;
-  this.content = null;
-  this.backBtn = null;
-}
-
-Dropdown.prototype.init = function({dropdownSec: secEle}) {
-  this.dropdown = document.querySelectorAll(secEle);
-  this.onClick();
-}
-Dropdown.prototype.onClick = function() {
-  for (let i = 0; i < this.dropdown.length; i++) {
-    this.btn = this.dropdown[i].querySelector('.dropdown-name');
-    this.content = this.dropdown[i].querySelector('.dropdown-content');
-    this.content.style.display = 'none';
-    this.backBtn = this.dropdown[i].querySelector('.back-btn');
-    this.backBtn.style.display = 'none';
-    this.btn.addEventListener('click', this.contView);
-    this.backBtn.addEventListener('click', this.backHandler);
-  }
-}
-Dropdown.prototype.contView = function(e) {
-  const targetCont = e.currentTarget.nextElementSibling,
-        targetBackBtn = e.currentTarget.closest('.dropdown').querySelector('.dropdown-content');
-
-  targetCont.style.display = 'block';
-  targetBackBtn.style.display = 'block';
-}
-Dropdown.prototype.backHandler = function(e) {
-  const target = e.currentTarget,
-        targetCont = e.currentTarget.previousElementSibling.querySelector('.dropdown-content');
-
-  target.style.display = 'none';
-  targetCont.style.display = 'none';
-} 
-
-//instance
-const dropdownPlay = new Dropdown();
-dropdownPlay.init({
-  dropdownSec: '.dropdown'
-});
-
-//tab
-function Tab() {
-  this.tab = null,
-  this.menu = null,
-  this.contents = null
-}
-
-Tab.prototype.init = function({tabSec: tabEle}) {
-  this.tab = document.querySelector(tabEle);
-  this.menu = this.tab.querySelectorAll('.tab-menu li');
-  this.contents = this.tab.querySelectorAll('.tab-cont li');
-  this.menu();
-}
-
-Tab.prototype.menu = function() {
-  [...this.menu].map((item, i) => {
-    item.querySelector('.btn').addEventListener('click', function(e) {
-      this.menu.forEach(el => {
+      console.log(accIcon)
+      accIcon.forEach(el => {
+        el.classList.remove('ani');
+      });
+      accView.forEach(el => {
         el.classList.remove('active');
       });
-      e.target.parentElement.classList.add('active');
-      this.contents(i);
-    }.bind(this));
-  });
-}
-
-Tab.prototype.contents = function(index) {
-  this.contents.forEach(el => {
-    el.classList.remove('active');
-  });
-  this.contents[index].classList.add('active');
+      targetView.add('active');
+      targetIcon.classList.add('ani');
+    }
+  }
 }
 
 //instance
-const tabMenu = new Tab();
-tabMenu.init({
-  tabSec: '.tabs'
-});
+// new acc = new Accordion('.acc-wrap', {
+//   childBtn: '.button',
+//   ico: 'btn-arrow',
+//   viewCont: 'content'
+// });
+
+//pop
+class ModalPop {
+  constructor() {
+    this.openBtn = null;
+    this.contents = null;
+    this.closeBtn = null;
+    this.closeBtnDim = null;
+  }
+  init({ openBtn: openBtn, openPop: contents, closeBtn: closeBtn, closeBtnDim: closeBtnDim }) {
+    this.openBtn = document.querySelectorAll(openBtn);
+    this.openBtn.forEach(el => {
+      el.addEventListener('click', this.open.bind(this));
+    });
+    this.contents = document.querySelectorAll(contents);
+    this.closeBtn = document.querySelectorAll(closeBtn);
+    this.closeBtn.forEach(el => {
+      el.addEventListener('click', this.close.bind(this));
+    });
+    this.closeBtnDim = document.querySelectorAll(closeBtnDim);
+    this.closeBtnDim.forEach(el => {
+      el.addEventListener('click', this.close.bind(this));
+    });
+  }
+  open(el) {
+    document.body.classList.add('pop-open');
+    const target = el.currentTarget.getAttribute('data-modal-type');
+    const contTarget = document.querySelector(`[data-modal-pop=${target}]`);
+    const contEle = contTarget.querySelector('.modal');
+    const dim = contTarget.querySelector('.dim');
+
+    contTarget.style.display = 'block';
+    dim.style.display = 'block';
+    setTimeout(() => {
+      contEle.classList.add('active');
+    }, 100);
+  }
+  close(e) {
+    if (e.currentTarget.className == 'dim') {
+      e.currentTarget.previousElementSibling.classList.remove('active');
+      e.currentTarget.style.display = 'none';
+    }
+    else {
+      e.currentTarget.closest('.modal').classList.remove('active');
+    }
+    this.contents.forEach(el => {
+      const attrEl = el.getAttribute('data-modal-pop');
+      console.log(attrEl);
+      if (attrEl == 'alert') { //alert 팝업 사용할 경우
+        document.body.classList.remove('pop-open');
+        el.style.display = 'none';
+      }
+      else {
+        setTimeout(() => {
+          el.style.display = 'none';
+          document.body.classList.remove('pop-open');
+        }, 200);
+      }
+    })
+    console.log(this.closeBtnDim);
+  }
+}
+
+//instance
+// const openPop = new ModalPop();
+// openPop.init({
+//   openBtn: '.btn-open-pop',
+//   openPop: '.pop-cont-area',
+//   closeBtn: '.btn-close',
+//   closeBtnDim: '.dim'
+// });
+
+//dropdown
+class Dropdown {
+  constructor() {
+    this.dropdown = null;
+    this.btn = null;
+    this.content = null;
+    this.backBtn = null;
+  }
+  init({ dropdownSec: secEle }) {
+    this.dropdown = document.querySelectorAll(secEle);
+    this.onClick();
+  }
+  onClick() {
+    for (let i = 0; i < this.dropdown.length; i++) {
+      this.btn = this.dropdown[i].querySelector('.dropdown-name');
+      this.content = this.dropdown[i].querySelector('.dropdown-content');
+      this.content.style.display = 'none';
+      this.backBtn = this.dropdown[i].querySelector('.back-btn');
+      this.backBtn.style.display = 'none';
+      this.btn.addEventListener('click', this.contView);
+      this.backBtn.addEventListener('click', this.backHandler);
+    }
+  }
+  contView(e) {
+    const targetCont = e.currentTarget.nextElementSibling,
+      targetBackBtn = e.currentTarget.closest('.dropdown').querySelector('.back-btn');
+
+    targetCont.style.display = 'block';
+    targetBackBtn.style.display = 'block';
+  }
+  backHandler(e) {
+    const target = e.currentTarget,
+      targetCont = e.currentTarget.previousElementSibling;
+    console.log(targetCont)
+
+    target.style.display = 'none';
+    targetCont.style.display = 'none';
+  }
+}
+
+//instance
+// const dropdownPlay = new Dropdown();
+// dropdownPlay.init({
+//   dropdownSec: '.dropdown'
+// });
+
+//tab
+class Tab {
+  constructor() {
+    this.tab = null,
+    this.menus = null,
+    this.contents = null
+  }
+  init({ tabSec: tabEle }) {
+    this.tab = document.querySelector(tabEle);
+    this.menus = this.tab.querySelectorAll('.tab-menu li');
+    this.contents = this.tab.querySelectorAll('.tab-cont li');
+    this.menu();
+  }
+  menu() {
+    [...this.menus].map((item, i) => {
+      item.querySelector('.btn').addEventListener('click', function (e) {
+        console.log('dd')
+        this.menus.forEach(el => {
+          el.classList.remove('active');
+        });
+        e.target.parentElement.classList.add('active');
+        this.content(i);
+      }.bind(this));
+    });
+  }
+  content(index) {
+    this.contents.forEach(el => {
+      el.classList.remove('active');
+    });
+    this.contents[index].classList.add('active');
+  }
+}
+
+//instance
+// const tabMenu = new Tab();
+// tabMenu.init({
+//   tabSec: '.tabs'
+// });

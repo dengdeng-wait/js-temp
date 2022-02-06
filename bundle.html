@@ -9,10 +9,49 @@
 </head>
 <body>
   <!-- accordion -->
-  <div class="accordion-play">
-    <button class="accordion-btn"><span class="toggle-ico"></span></button>
-    <div class="accordion-content"></div>
-  </div>
+  <section class="accordion-play">
+    <button class="accordion-btn">
+      <strong>타이틀1</strong>
+      <span class="toggle-ico">Icon1</span></button>
+    <div class="accordion-content">contents1</div>
+    <button class="accordion-btn">
+      <strong>타이틀2</strong>
+      <span class="toggle-ico">Icon2</span></button>
+    <div class="accordion-content">contents2</div>
+  </section>
+  <!-- //accordion -->
+
+  <!-- modalpop -->
+  <button class="btn-open-pop" data-modal-type="popDefault">팝업열기</button>
+  <section class="pop-cont-area" data-modal-pop="popDefault" style="display: none">
+    <div class="modal">
+      <div>팝업컨텐츠</div>
+      <button class="btn-close">팝업닫기</button>
+    </div>
+    <div class="dim" style="display: none;position: absolute;width: 100%;height: 100px;background-color: rgba(0, 0, 0, 0.6)"></div>
+  </section>
+  <!-- //modalpop -->
+
+  <!-- dropdown -->
+  <section class="dropdown">
+    <button class="dropdown-name">타이틀</button>
+    <div class="dropdown-content">컨텐츠</div>
+    <button class="back-btn">닫기</button>
+  </section>
+  <!-- //dropdown -->
+
+  <!-- tabs -->
+  <section class="tabs">
+    <ul class="tab-menu">
+      <li><button class="btn">메뉴1</button></li>
+      <li><button class="btn">메뉴2</button></li>
+    </ul>
+    <ul class="tab-cont">
+      <li>메뉴컨텐츠1</li>
+      <li>메뉴컨텐츠2</li>
+    </ul>
+  </section>
+  <!-- //tabs -->
 
   <script src="js/common.js"></script>
   <script>
@@ -23,6 +62,29 @@
       viewCont: '.accordion-content'
     });
     console.log(acc1);
+
+    //modalpop instance
+    const openPop = new ModalPop();
+    openPop.init({
+      openBtn: '.btn-open-pop',
+      openPop: '.pop-cont-area',
+      closeBtn: '.btn-close',
+      closeBtnDim: '.dim'
+    });
+    console.log(openPop);
+
+    //dropdown instance
+    const dropdownPlay = new Dropdown();
+    dropdownPlay.init({
+      dropdownSec: '.dropdown'
+    });
+
+    //tab instance
+    const tabMenu = new Tab();
+    tabMenu.init({
+      tabSec: '.tabs'
+    });
+    console.log(tabMenu);
   </script>
 </body>
 </html>
