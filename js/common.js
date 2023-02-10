@@ -6,6 +6,7 @@ window.onload = () => {
 const init = () => {
   sliderOpacity();
 }
+
 //slide opacity  
 const sliderOpacity = () => {
   const SHOWING_CLASS = 'showing';
