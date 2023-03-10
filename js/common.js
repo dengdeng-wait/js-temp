@@ -4,6 +4,7 @@ window.onload = () => {
 }
 
 const init = () => {
+  const vers = new Date().getDate() + '' + (new Date().getHours());
   sliderOpacity();
 }
 
@@ -303,7 +304,6 @@ class Tab {
   menu() {
     [...this.menus].map((item, i) => {
       item.querySelector('.btn').addEventListener('click', function (e) {
-        console.log('dd')
         this.menus.forEach(el => {
           el.classList.remove('active');
         });
