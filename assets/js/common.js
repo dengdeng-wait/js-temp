@@ -202,18 +202,20 @@ class ModalPop {
     const dim = contTarget.querySelector('.dim');
 
     contTarget.style.display = 'block';
-    dim.style.display = 'block';
+    // dim.style.display = 'block';
     setTimeout(() => {
-      contEle.classList.add('active');
+      contTarget.classList.add('active');
     }, 100);
   }
   close(e) {
     if (e.currentTarget.className == 'dim') {
-      e.currentTarget.previousElementSibling.classList.remove('active');
-      e.currentTarget.style.display = 'none';
+      e.currentTarget.parentElement.classList.remove('active');
+      setTimeout(() => {
+        e.currentTarget.style.display = 'none';
+      }, 100);
     }
     else {
-      e.currentTarget.closest('.modal').classList.remove('active');
+      e.currentTarget.closest('.pop-cont-area').classList.remove('active');
     }
     this.contents.forEach(el => {
       const attrEl = el.getAttribute('data-modal-pop');
@@ -325,3 +327,28 @@ class Tab {
 // tabMenu.init({
 //   tabSec: '.tabs'
 // });
+
+//별도의 추가기능들
+function touchOpenClose() {
+  window.addEventListener('touchstart', function (ev) {
+    ts = parseInt(ev.touches[0].pageY)
+    console.log(ev.touches[0]);
+  });
+
+  let ts, te;
+  window.addEventListener('touchend', function (ev) {
+    te = parseInt(ev.changedTouches[0].pageY)
+    if (ts - te > 200) {
+      processOpen()
+
+    } else if (ts - te < -100) {
+      processClose()
+    }
+  });
+  function processOpen() {
+    console.log('open');
+  }
+  function processClose() {
+    console.log('close');
+  }
+}
